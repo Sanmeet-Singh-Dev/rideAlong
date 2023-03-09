@@ -65,7 +65,8 @@ const riderPage8 = document.getElementById("rider-page8");
 
 const requestPage = document.getElementById('request-page');
 
-requestPage.addEventListener('click',()=>{
+requestPage.addEventListener('click',(e)=>{
+    e.preventDefault();
     window.location.href = `../request.html?doc-id=${document_id}`;
 })
 

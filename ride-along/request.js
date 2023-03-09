@@ -36,6 +36,7 @@ if (docSnap.exists()) {
 console.log(user_email);
 let email_temp;
 let tempArr = [];
+let docArr = [];
 let querySnapshot = await getDocs(collection(db, 'rider-details'));
 // console.log(user_id);
 querySnapshot.forEach((doc) => {
@@ -53,13 +54,15 @@ querySnapshot.forEach((doc) => {
     if (user_email == email_temp) {
       console.log(doc.data().trip_details);
       tempArr.push(doc.data());
+      docArr.push(doc.id);
     }
   }
 
 });
 
 console.log(tempArr);
-console.log(tempArr[0].trip_details.price);
+console.log(docArr);
+// console.log(tempArr[0].trip_details.price);
 
 for (let i = 0; i < tempArr.length; i++) {
 
@@ -87,9 +90,17 @@ for (let i = 0; i < tempArr.length; i++) {
   const acceptButton = document.getElementById("accept")
 
   acceptButton.addEventListener('click', async (e) => {
-    
+    e.preventDefault();
+    console.log(docArr[i]);
+    await setDoc(doc(db,"rider-details",docArr[i]),{
+      trip_details :{
+        ride_approved : "true"
+      }    
+          },{
+          merge: true
+      })
 
-
+      window.location.href = `./trip-preview.html?doc-id=${document_id}&rider-id=${docArr[i]}`;
 
   }
 
