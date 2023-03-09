@@ -88,37 +88,37 @@ for(let i =0; i<tempArr.length;i++){
    
    acceptButton.addEventListener('click',async(e)=>{
 
-    const driverDetailsRef = collection(db, 'driver-details');
-    const driverDetailsSnapshot = await getDoc(doc(driverDetailsRef, document_id));
-  
-    if (driverDetailsSnapshot.exists()) {
-      const newCollectionRef = collection(db, 'trip-accepted');
-      const driver = new Map();
-      for (const [key, value] of Object.entries(driverDetailsSnapshot.data())) {
-        driver.set(key, value);
-      }
-      const driverObject = Object.fromEntries(driver);
-      const newDocRef = await addDoc(newCollectionRef, driverObject);
-      console.log('New document added with ID: ', newDocRef.id);
-      alert("Ride Accepted!")
-    } else {
-      console.log('No such document!');
-    }
-  })
-    
-    // const db = getFirestore();
     // const driverDetailsRef = collection(db, 'driver-details');
     // const driverDetailsSnapshot = await getDoc(doc(driverDetailsRef, document_id));
   
     // if (driverDetailsSnapshot.exists()) {
     //   const newCollectionRef = collection(db, 'trip-accepted');
-    //   const newDocRef = await addDoc(newCollectionRef, driverDetailsSnapshot.data());
+    //   const driver = new Map();
+    //   for (const [key, value] of Object.entries(driverDetailsSnapshot.data())) {
+    //     driver.set(key, value);
+    //   }
+    //   const driverObject = Object.fromEntries(driver);
+    //   const newDocRef = await addDoc(newCollectionRef, driverObject);
     //   console.log('New document added with ID: ', newDocRef.id);
     //   alert("Ride Accepted!")
     // } else {
     //   console.log('No such document!');
     // }
-
+    
+    // const db = getFirestore();
+     const driverDetailsRef = collection(db, 'driver-details');
+     const driverDetailsSnapshot = await getDoc(doc(driverDetailsRef, document_id));
+    
+     if (driverDetailsSnapshot.exists()) {
+         const newCollectionRef = collection(db, 'trip-accepted');
+        const newDocRef = await addDoc(newCollectionRef,{ driver: driverDetailsSnapshot.data() });
+         console.log('New document added with ID: ', newDocRef.id);
+         alert("Ride Accepted!")
+       } else {
+           console.log('No such document!');
+         }
+        
+      })
 
 
 //    const requestDriver = document.getElementById(`request-driver-${i}`);
