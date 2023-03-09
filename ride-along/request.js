@@ -79,8 +79,47 @@ for(let i =0; i<tempArr.length;i++){
     <p>Pet: ${tempArr[i].trip_details.pet}</p>
     <p>Price: ${tempArr[i].trip_details.price}</p>
     <p>Description: ${tempArr[i].trip_details.description}</p>
+    <input type="button" value="Accept" id="accept">
+    <input type="button" value="Decline" id="decline">
   `;
    availableRider.appendChild(div);
+
+   const acceptButton = document.getElementById("accept")
+   
+   acceptButton.addEventListener('click',async(e)=>{
+
+    const driverDetailsRef = collection(db, 'driver-details');
+    const driverDetailsSnapshot = await getDoc(doc(driverDetailsRef, document_id));
+  
+    if (driverDetailsSnapshot.exists()) {
+      const newCollectionRef = collection(db, 'trip-accepted');
+      const driver = new Map();
+      for (const [key, value] of Object.entries(driverDetailsSnapshot.data())) {
+        driver.set(key, value);
+      }
+      const driverObject = Object.fromEntries(driver);
+      const newDocRef = await addDoc(newCollectionRef, driverObject);
+      console.log('New document added with ID: ', newDocRef.id);
+      alert("Ride Accepted!")
+    } else {
+      console.log('No such document!');
+    }
+  })
+    
+    // const db = getFirestore();
+    // const driverDetailsRef = collection(db, 'driver-details');
+    // const driverDetailsSnapshot = await getDoc(doc(driverDetailsRef, document_id));
+  
+    // if (driverDetailsSnapshot.exists()) {
+    //   const newCollectionRef = collection(db, 'trip-accepted');
+    //   const newDocRef = await addDoc(newCollectionRef, driverDetailsSnapshot.data());
+    //   console.log('New document added with ID: ', newDocRef.id);
+    //   alert("Ride Accepted!")
+    // } else {
+    //   console.log('No such document!');
+    // }
+
+
 
 //    const requestDriver = document.getElementById(`request-driver-${i}`);
 
